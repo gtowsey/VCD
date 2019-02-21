@@ -1,0 +1,4 @@
+VM,GracefulShutdown
+VM-1,no
+VM-2,yes
+1000,no

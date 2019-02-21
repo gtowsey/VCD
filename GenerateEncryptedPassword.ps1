@@ -1,0 +1,1 @@
+(Get-Credential).Password | ConvertFrom-SecureString | Out-File $($PSScriptRoot + "\Password.txt")
