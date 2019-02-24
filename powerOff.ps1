@@ -35,34 +35,42 @@ $vCloud_organisation = ''
 
 
 ### Check if teh log csv exists elseattempt to create the csv.fail if user doesnt have rights etc.
+function send-email ($body){
+    Send-MailMessage -From $smtpfrom -To $smtpto -Subject $smtpsubject -smtpServer $smtprelay -body $body
+    add-content $log_location $_.Exception.message
+}
+
+###Check if teh log csv exists elseattempt to create the csv.fail if user doesnt have rights etc.
 if (!(test-path $log_location)) {
 
     try {
         out-file $log_location
     }
     catch {
-        add-content $log_location 'unable to create log file in selected path'
+        #add-content $log_location "$(get-date) unable to create log file in selected path"
+        send-email "$(get-date) unable to create log file"
         exit
     }
 }
 
-### attempt to import csv data. fail wcript if not found
+###attempt to import csv data. fail wcript if not found
 try {
     $csv = import-csv $csv_location
 }
 catch {
-    add-content $log_location 'unable to import csv' 
+    add-content $log_location "$(get-date) unable to import csv"
+    send-email "$(get-date) unable to import csv"
     exit
 }
 
-### download powerCLI module of at least version 5.0.1 from the VMWare website.
-### Confirm module exists
-
+###download powerCLI module of at least version 5.0.1 from the VMWare website
+###confirm module exists
 Try {
     import-module vmware.vimautomation.cloud
 }
 catch {
-    add-content $log_location 'unable to import vmwaremodule' 
+    add-content $log_location "$(get-date) unable to import vCloud module"
+    send-email "$(get-date) unable to import vCloud module"
     exit
 }
 
@@ -71,21 +79,22 @@ try {
     $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $username, (Get-Content $password_file | ConvertTo-SecureString)
 }
 catch {
-    add-content $log_location 'unable to open password file'
+    add-content $log_location "$(get-date) unable to open password file"
+    send-email "$(get-date) unable to open password file"
     exit
 }
 
-### attempt to connect to vCloud server. exit if failed
+#attempt to connect to vCloud server. exit if failed
 try {
     connect-Ciserver $vCloud_server_name -credential $credential -org $vCloud_organisation | out-null
 }
 catch {
-    add-content $log_location 'organisation or credentials incorrect'
+    add-content $log_location "$(get-date) organisation or credentials incorrect"
+    send-email "$(get-date) organisation or credentials incorrect"
     exit
 }
 
-
-### blank arrays for handlign responses
+#blank arrays for handlign responses
 $results = @()
 $errors = @()
 
@@ -142,7 +151,7 @@ foreach ($failedtask in $FailedTasks) {
 ### send email with any errors
 if ($errors) {
     add-content $log_location $($errors  | out-string -width 300)
-    Send-MailMessage -From $smtpfrom -To $smtpto -Subject $smtpsubject -smtpServer $smtprelay -body $body
+    send-email $body
 }
 
 ### disconnect from vcloud server
