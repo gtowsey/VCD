@@ -1,10 +1,10 @@
-PAYG Power Cycle Script
+Power Cycle Script
 =======================
 
 Purpose
 -------
 
-The purpose of the PAYG Power Cycle script is to provide an automated way for
+The purpose of the Power Cycle script is to provide an automated way for
 clients to power cycle VM’s.
 
 The script is intended to be used with a scheduled job and configured to power
