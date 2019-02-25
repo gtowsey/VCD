@@ -21,8 +21,7 @@ The following are required in order for the script to work.
     <https://docs.microsoft.com/en-us/powershell/scripting/install/installing-windows-powershell?view=powershell-6>
     )
 
--   The server has access to the  vCloud servers.
-  
+-   The server has access to the vCloud servers.
 
 -   An account with the “Organisation Administrator” role to the organisation
     containing the VM’s
@@ -49,9 +48,7 @@ The following section outlines deploying the script
 The latest version of the script and required components can be downloaded from
 <https://github.com/gtowsey/VCD>
 
-
 Click on the clone or download button and download to zip
-
 
 Once downloaded extract the contents to a folder.
 
@@ -92,33 +89,29 @@ and the VM list and script updated to cater for this.
 
 Ensure the file looks like this at the end of any modification
 
-
 ### Update Configuration Settings
 
 Each script has a settings section that needs to be updated before the script is
 run. This is located at the top of the script.
 
-
 The variables that need to be updated are listed below:
 
-| Variable              | Description                                                                                                                                                       |
-|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| \$username            | The username of the account to connect to vCloud Director with                                                                                                    |
-| \$vCloud_server_name  | The server address to connect to 
-                      |
-| \$vCloud_organisation | The organisation to connect to.
-                      |  
-| \$smtprelay           | The ip address or dns name of the smtp server                                                                                                                     |
-| \$smtpfrom            | The sender of any email addresses                                                                                                                                 |
-| \$smtpto              | The receiver of the email address                                                                                                                                 |
-| \$smtpsubject         | The subject of the email address                                                                                                                                  |
+| Variable              | Description                                                    |
+|-----------------------|----------------------------------------------------------------|
+| \$username            | The username of the account to connect to vCloud Director with |
+| \$vCloud_server_name  | The server address to connect to                               |
+| \$vCloud_organisation | The organisation to connect to                                 |
+| \$smtprelay           | The ip address or dns name of the smtp server                  |
+| \$smtpfrom            | The sender of any email addresses                              |
+| \$smtpto              | The receiver of the email address                              |
+| \$smtpsubject         | The subject of the email address                               |
 
 ### Testing
 
 At this point, the script is ready to be ran.
 
 In order to confirm all settings are working either run against a test VM in
-vCloud or alternatively perform the opposite action against a VM (if a VM
+shared cloud or alternatively perform the opposite action against a VM (if a VM
 is turned off attempt to turn off, if its turned on attempt to turn on.)
 
 If the second option is completed an email should be sent outlining that the
@@ -127,7 +120,6 @@ action cannot be performed due to the state of the VM.
 ### Setting up the scheduled task
 
 Open the task scheduler and click on create task.
-
 
 Click on change user to choose the account that is going to run the script. Note
 this must be the account that encrypted the vCloud director credentials.
@@ -139,7 +131,7 @@ Click on the actions tab and click on new
 
 In the Program/script box enter "PowerShell."
 
-In the Add arguments (optional) box enter the value .\\pwerOn.ps1 for the
+In the Add arguments (optional) box enter the value .\\powerOn.ps1 for the
 powerOn scheduled task and powerOff for the power off task.
 
 Then, in the Start in (optional) box, add the location of the folder that
@@ -172,7 +164,6 @@ only the log will contain an error.
 
 If the smtp server is not found the logs will contain a record similar to the
 below
-
 
 Ensure that the smtp server is reachable from the script execution server
 
@@ -236,3 +227,4 @@ running on the VM.
 
 If tools is not running, the VM will not be shut down and the following error
 will be generated.
+
